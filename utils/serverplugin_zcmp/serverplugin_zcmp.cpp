@@ -21,6 +21,7 @@
 #include "engine/IEngineTrace.h"
 #include "tier2/tier2.h"
 #include "game/server/iplayerinfo.h"
+#include "zenoplayer.h"
 
 // Uncomment this to compile the sample TF2 plugin code, note: most of this is duplicated in serverplugin_tony, but kept here for reference!
 //#define SAMPLE_TF2_PLUGIN
@@ -47,6 +48,19 @@ inline bool FStrEq(const char *sz1, const char *sz2)
 {
 	return(Q_stricmp(sz1, sz2) == 0);
 }
+
+CBaseEntity* GetBaseEntity(edict_t *pEntity)
+{
+	if ( !pEntity || pEntity->IsFree() ) 
+	{
+		return NULL;
+	}
+
+	CBaseEntity *pent = pEntity->GetUnknown()->GetBaseEntity();
+
+	return pent;
+}
+
 //---------------------------------------------------------------------------------
 // Purpose: the Zeno Clash Multiplayer plugin class
 //---------------------------------------------------------------------------------
@@ -179,7 +193,7 @@ void CZCMPServerPlugin::UnPause( void )
 //---------------------------------------------------------------------------------
 const char *CZCMPServerPlugin::GetPluginDescription( void )
 {
-	return "Zeno Clash Multiplauer";
+	return "Zeno Clash Multiplayer";
 }
 
 //---------------------------------------------------------------------------------
@@ -223,6 +237,7 @@ void CZCMPServerPlugin::LevelShutdown( void ) // !!!!this can get called multipl
 //---------------------------------------------------------------------------------
 void CZCMPServerPlugin::ClientActive( edict_t *pEntity )
 {
+	helpers->ClientCommand( pEntity, "combaton" );
 }
 
 //---------------------------------------------------------------------------------
@@ -237,14 +252,6 @@ void CZCMPServerPlugin::ClientDisconnect( edict_t *pEntity )
 //---------------------------------------------------------------------------------
 void CZCMPServerPlugin::ClientPutInServer( edict_t *pEntity, char const *playername )
 {
-	KeyValues *kv = new KeyValues( "msg" );
-	kv->SetString( "title", "Hello" );
-	kv->SetString( "msg", "Hello there" );
-	kv->SetColor( "color", Color( 255, 0, 0, 255 ));
-	kv->SetInt( "level", 5);
-	kv->SetInt( "time", 10);
-	helpers->CreateMessage( pEntity, DIALOG_MSG, kv, this );
-	kv->deleteThis();
 }
 
 //---------------------------------------------------------------------------------
@@ -335,66 +342,40 @@ PLUGIN_RESULT CZCMPServerPlugin::ClientCommand( edict_t *pEntity, const CCommand
 		return PLUGIN_CONTINUE;
 	}
 
-	if ( FStrEq( pcmd, "menu" ) )
-	{
-		KeyValues *kv = new KeyValues( "menu" );
-		kv->SetString( "title", "You've got options, hit ESC" );
-		kv->SetInt( "level", 1 );
-		kv->SetColor( "color", Color( 255, 0, 0, 255 ));
-		kv->SetInt( "time", 20 );
-		kv->SetString( "msg", "Pick an option\nOr don't." );
-		
-		for( int i = 1; i < 9; i++ )
-		{
-			char num[10], msg[10], cmd[10];
-			Q_snprintf( num, sizeof(num), "%i", i );
-			Q_snprintf( msg, sizeof(msg), "Option %i", i );
-			Q_snprintf( cmd, sizeof(cmd), "option%i", i );
+	CBaseEntity *pent = GetBaseEntity(pEntity);
+	int index = engine->IndexOfEdict(pEntity);
 
-			KeyValues *item1 = kv->FindKey( num, true );
-			item1->SetString( "msg", msg );
-			item1->SetString( "command", cmd );
+	if (FStrEq( pcmd, "combaton" ))
+	{
+		Log("zenocombaton for entity %d\n", index);
+
+		if (pent)
+		{
+			CZenoPlayer::ZenoCombat(pent, TRUE);
+		}
+		else
+		{
+			Error("Couldn't get CBaseEntity for entity %d\n", index);
 		}
 
-		helpers->CreateMessage( pEntity, DIALOG_MENU, kv, this );
-		kv->deleteThis();
-		return PLUGIN_STOP; // we handled this function
+		// we handled this function
+		return PLUGIN_STOP;
 	}
-	else if ( FStrEq( pcmd, "rich" ) )
+	else if (FStrEq( pcmd, "combatoff" ))
 	{
-		KeyValues *kv = new KeyValues( "menu" );
-		kv->SetString( "title", "A rich message" );
-		kv->SetInt( "level", 1 );
-		kv->SetInt( "time", 20 );
-		kv->SetString( "msg", "This is a long long long text string.\n\nIt also has line breaks." );
-		
-		helpers->CreateMessage( pEntity, DIALOG_TEXT, kv, this );
-		kv->deleteThis();
-		return PLUGIN_STOP; // we handled this function
-	}
-	else if ( FStrEq( pcmd, "msg" ) )
-	{
-		KeyValues *kv = new KeyValues( "menu" );
-		kv->SetString( "title", "Just a simple hello" );
-		kv->SetInt( "level", 1 );
-		kv->SetInt( "time", 20 );
-		
-		helpers->CreateMessage( pEntity, DIALOG_MSG, kv, this );
-		kv->deleteThis();
-		return PLUGIN_STOP; // we handled this function
-	}
-	else if ( FStrEq( pcmd, "entry" ) )
-	{
-		KeyValues *kv = new KeyValues( "entry" );
-		kv->SetString( "title", "Stuff" );
-		kv->SetString( "msg", "Enter something" );
-		kv->SetString( "command", "say" ); // anything they enter into the dialog turns into a say command
-		kv->SetInt( "level", 1 );
-		kv->SetInt( "time", 20 );
-		
-		helpers->CreateMessage( pEntity, DIALOG_ENTRY, kv, this );
-		kv->deleteThis();
-		return PLUGIN_STOP; // we handled this function		
+		Log("zenocombatoff for entity %d\n", index);
+
+		if (pent)
+		{
+			CZenoPlayer::ZenoCombat(pent, FALSE);
+		}
+		else
+		{
+			Error("Couldn't get CBaseEntity for entity %d\n", index);
+		}
+
+		// we handled this function
+		return PLUGIN_STOP;
 	}
 	return PLUGIN_CONTINUE;
 }

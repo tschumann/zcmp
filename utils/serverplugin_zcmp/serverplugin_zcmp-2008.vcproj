@@ -279,6 +279,10 @@
 				RelativePath=".\serverplugin_zcmp.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\zenoplayer.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Link Libraries"
@@ -381,6 +385,10 @@
 			</File>
 			<File
 				RelativePath="..\..\public\vstdlib\vstdlib.h"
+				>
+			</File>
+			<File
+				RelativePath=".\zenoplayer.h"
 				>
 			</File>
 		</Filter>
