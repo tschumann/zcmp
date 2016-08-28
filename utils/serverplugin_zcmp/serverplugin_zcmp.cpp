@@ -273,26 +273,12 @@ void ClientPrint( edict_t *pEdict, char *format, ... )
 
 	engine->ClientPrintf( pEdict, string );
 }
+
 //---------------------------------------------------------------------------------
 // Purpose: called on level start
 //---------------------------------------------------------------------------------
 void CZCMPServerPlugin::ClientSettingsChanged( edict_t *pEdict )
 {
-	if ( playerinfomanager )
-	{
-		IPlayerInfo *playerinfo = playerinfomanager->GetPlayerInfo( pEdict );
-
-		const char * name = engine->GetClientConVarValue( engine->IndexOfEdict(pEdict), "name" );
-
-		if ( playerinfo && name && playerinfo->GetName() && 
-			 Q_stricmp( name, playerinfo->GetName()) ) // playerinfo may be NULL if the MOD doesn't support access to player data 
-													   // OR if you are accessing the player before they are fully connected
-		{
-			ClientPrint( pEdict, "Your name changed to \"%s\" (from \"%s\"\n", name, playerinfo->GetName() );
-						// this is the bad way to check this, the better option it to listen for the "player_changename" event in FireGameEvent()
-						// this is here to give a real example of how to use the playerinfo interface
-		}
-	}
 }
 
 //---------------------------------------------------------------------------------
@@ -301,33 +287,6 @@ void CZCMPServerPlugin::ClientSettingsChanged( edict_t *pEdict )
 PLUGIN_RESULT CZCMPServerPlugin::ClientConnect( bool *bAllowConnect, edict_t *pEntity, const char *pszName, const char *pszAddress, char *reject, int maxrejectlen )
 {
 	return PLUGIN_CONTINUE;
-}
-
-CON_COMMAND( DoAskConnect, "Server plugin example of using the ask connect dialog" )
-{
-	if ( args.ArgC() < 2 )
-	{
-		Warning ( "DoAskConnect <server IP>\n" );
-	}
-	else
-	{
-		const char *pServerIP = args.Arg( 1 );
-
-		KeyValues *kv = new KeyValues( "menu" );
-		kv->SetString( "title", pServerIP );	// The IP address of the server to connect to goes in the "title" field.
-		kv->SetInt( "time", 3 );
-
-		for ( int i=1; i < gpGlobals->maxClients; i++ )
-		{
-			edict_t *pEdict = engine->PEntityOfEntIndex( i );
-			if ( pEdict )
-			{
-				helpers->CreateMessage( pEdict, DIALOG_ASKCONNECT, kv, &g_EmtpyServerPlugin );
-			}
-		}
-
-		kv->deleteThis();
-	}
 }
 
 //---------------------------------------------------------------------------------
@@ -395,9 +354,11 @@ void CZCMPServerPlugin::OnQueryCvarValueFinished( QueryCvarCookie_t iCookie, edi
 {
 	Msg( "Cvar query (cookie: %d, status: %d) - name: %s, value: %s\n", iCookie, eStatus, pCvarName, pCvarValue );
 }
+
 void CZCMPServerPlugin::OnEdictAllocated( edict_t *edict )
 {
 }
+
 void CZCMPServerPlugin::OnEdictFreed( const edict_t *edict  )
 {
 }
