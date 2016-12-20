@@ -310,7 +310,7 @@ PLUGIN_RESULT CZCMPServerPlugin::ClientCommand( edict_t *pEntity, const CCommand
 
 		if (pent)
 		{
-			CZenoPlayer::ZenoCombat(pent, TRUE);
+			zenoclash::CBasePlayer::ZenoCombat(pent, TRUE);
 		}
 		else
 		{
@@ -326,7 +326,7 @@ PLUGIN_RESULT CZCMPServerPlugin::ClientCommand( edict_t *pEntity, const CCommand
 
 		if (pent)
 		{
-			CZenoPlayer::ZenoCombat(pent, FALSE);
+			zenoclash::CBasePlayer::ZenoCombat(pent, FALSE);
 		}
 		else
 		{
@@ -352,7 +352,6 @@ PLUGIN_RESULT CZCMPServerPlugin::NetworkIDValidated( const char *pszUserName, co
 //---------------------------------------------------------------------------------
 void CZCMPServerPlugin::OnQueryCvarValueFinished( QueryCvarCookie_t iCookie, edict_t *pPlayerEntity, EQueryCvarValueStatus eStatus, const char *pCvarName, const char *pCvarValue )
 {
-	Msg( "Cvar query (cookie: %d, status: %d) - name: %s, value: %s\n", iCookie, eStatus, pCvarName, pCvarValue );
 }
 
 void CZCMPServerPlugin::OnEdictAllocated( edict_t *edict )
@@ -368,8 +367,8 @@ void CZCMPServerPlugin::OnEdictFreed( const edict_t *edict  )
 //---------------------------------------------------------------------------------
 void CZCMPServerPlugin::FireGameEvent( KeyValues * event )
 {
-	const char * name = event->GetName();
-	Msg( "CEmptyServerPlugin::FireGameEvent: Got event \"%s\"\n", name );
+	// const char * name = event->GetName();
+	// Msg( "CEmptyServerPlugin::FireGameEvent: Got event \"%s\"\n", name );
 }
 
 //---------------------------------------------------------------------------------
@@ -388,4 +387,4 @@ CON_COMMAND( empty_log, "logs the version of zcmp" )
 //---------------------------------------------------------------------------------
 // Purpose: an example cvar
 //---------------------------------------------------------------------------------
-static ConVar empty_cvar("plugin_empty", "0", 0, "Example plugin cvar");
+// static ConVar empty_cvar("plugin_empty", "0", 0, "Example plugin cvar");

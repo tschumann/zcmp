@@ -15,10 +15,13 @@
 
 class VirtualEmpty {};
 
-class CZenoPlayer
+namespace zenoclash
 {
-public:
-	static void ZenoCombat(CBaseEntity *pThisPtr, BOOL on);
-};
+	class CBasePlayer
+	{
+	public:
+		static void ZenoCombat(CBaseEntity *pThisPtr, BOOL on);
+	};
+}
 
 #endif	// ZENOPLAYER_H
