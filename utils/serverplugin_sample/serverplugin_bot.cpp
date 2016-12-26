@@ -287,15 +287,14 @@ void Bot_HandleSendCmd( CPluginBot *pBot )
 // If bots are being forced to fire a weapon, see if I have it
 void Bot_ForceFireWeapon( CPluginBot *pBot, CBotCmd &cmd )
 {
-	if ( Q_strlen( bot_forcefireweapon.GetString() ) > 0 )
+	if ( true )
 	{
-		pBot->m_BotInterface->SetActiveWeapon( bot_forcefireweapon.GetString() );
 		bot_forcefireweapon.SetValue( "" );
 		// Start firing
 		// Some weapons require releases, so randomise firing
-		if ( bot_forceattackon.GetBool() || (RandomFloat(0.0,1.0) > 0.5) )
+		if ( RandomFloat(0.0,1.0) > 0.5 )
 		{
-			cmd.buttons |= bot_forceattack2.GetBool() ? IN_ATTACK2 : IN_ATTACK;
+			cmd.buttons |= IN_ATTACK;
 		}
 	}
 }
@@ -330,8 +329,6 @@ void Bot_HandleRespawn( CPluginBot *pBot, CBotCmd &cmd )
 		if ( pBot->m_PlayerInfo->GetTeamIndex() == 0 )
 		{
 			helpers->ClientCommand( pBot->m_BotEdict, "joingame" );
-			helpers->ClientCommand( pBot->m_BotEdict, "jointeam 3" );
-			helpers->ClientCommand( pBot->m_BotEdict, "joinclass 0" );
 		}
 	}
 }
@@ -352,13 +349,13 @@ void Bot_Think( CPluginBot *pBot )
 
 		if ( !pBot->m_PlayerInfo->IsDead() )
 		{
-			Bot_SetForwardMovement( pBot, cmd );
+			// Bot_SetForwardMovement( pBot, cmd );
 
 			// Only turn if I haven't been hurt
 			if ( !pBot->m_BotInterface->IsEFlagSet(EFL_BOT_FROZEN) && pBot->m_PlayerInfo->GetHealth() == 100 )
 			{
-				Bot_UpdateDirection( pBot );
-				Bot_UpdateStrafing( pBot, cmd );
+				// Bot_UpdateDirection( pBot );
+				// Bot_UpdateStrafing( pBot, cmd );
 			}
 
 			// Handle console settings.
@@ -370,7 +367,7 @@ void Bot_Think( CPluginBot *pBot )
 			Bot_HandleRespawn( pBot, cmd );
 		}
 
-		Bot_FlipOut( pBot, cmd );
+		// Bot_FlipOut( pBot, cmd );
 
 		// Fix up the m_fEffects flags
 		pBot->m_BotInterface->PostClientMessagesSent();

@@ -8,21 +8,15 @@
 		"OnlyInGame" "1"
 		"center"		"1"
 	}
-	"2"	
+	"5"
 	{
-		"label" "#GameUI_GameMenu_NewGame"
-		"command" "OpenNewGameDialog"
-		"InGameOrder" "20"
-		"notmulti" "1"
-		"center"		"1"
+		"label" "#GameUI_GameMenu_FindServers"
+		"command" "OpenServerBrowser"
 	}
 	"6"
 	{
-		"label" "#GameUI_GameMenu_LoadGame"
-		"command" "OpenLoadGameDialog"
-		"InGameOrder" "40"
-		"notmulti" "1"
-		"center"		"1"
+		"label" "#GameUI_GameMenu_CreateServer"
+		"command" "OpenCreateMultiplayerGameDialog"
 	}
 	"11"
 	{
