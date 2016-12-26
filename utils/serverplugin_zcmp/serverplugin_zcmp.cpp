@@ -100,6 +100,7 @@ public:
 	virtual int GetCommandIndex() { return m_iClientCommandIndex; }
 private:
 	int m_iClientCommandIndex;
+	int m_iMaxClientCount;
 };
 
 
@@ -115,6 +116,7 @@ EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CZCMPServerPlugin, IServerPluginCallbacks, INT
 CZCMPServerPlugin::CZCMPServerPlugin()
 {
 	m_iClientCommandIndex = 0;
+	m_iMaxClientCount = 0;
 }
 
 CZCMPServerPlugin::~CZCMPServerPlugin()
@@ -211,6 +213,7 @@ void CZCMPServerPlugin::LevelInit( char const *pMapName )
 //---------------------------------------------------------------------------------
 void CZCMPServerPlugin::ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 {
+	m_iMaxClientCount = clientMax;
 }
 
 //---------------------------------------------------------------------------------
@@ -237,7 +240,6 @@ void CZCMPServerPlugin::LevelShutdown( void ) // !!!!this can get called multipl
 //---------------------------------------------------------------------------------
 void CZCMPServerPlugin::ClientActive( edict_t *pEntity )
 {
-	helpers->ClientCommand( pEntity, "combaton" );
 }
 
 //---------------------------------------------------------------------------------
@@ -369,6 +371,36 @@ void CZCMPServerPlugin::FireGameEvent( KeyValues * event )
 {
 	const char * name = event->GetName();
 	Msg( "CEmptyServerPlugin::FireGameEvent: Got event \"%s\"\n", name );
+
+	if (FStrEq(name, "player_activate"))
+	{
+		for ( KeyValues *pKey = event->GetFirstSubKey(); pKey; pKey = pKey->GetNextKey() )
+		{
+			if (FStrEq(pKey->GetName(), "userid"))
+			{
+				int userid = pKey->GetInt();
+
+				for (int i = 1; i <= m_iMaxClientCount; i++)
+				{
+					// get the player
+					edict_t *player = engine->PEntityOfEntIndex(i);
+
+					if (!player)
+					{
+						continue;
+					}
+
+					// if the player has given userid
+					if (engine->GetPlayerUserId(player) == userid)
+					{
+						helpers->ClientCommand( player, "combaton" );
+						// stop looking
+						break;
+					}
+				}
+			}
+		}
+	}
 }
 
 //---------------------------------------------------------------------------------
