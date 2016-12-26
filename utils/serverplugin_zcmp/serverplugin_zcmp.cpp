@@ -367,8 +367,8 @@ void CZCMPServerPlugin::OnEdictFreed( const edict_t *edict  )
 //---------------------------------------------------------------------------------
 void CZCMPServerPlugin::FireGameEvent( KeyValues * event )
 {
-	// const char * name = event->GetName();
-	// Msg( "CEmptyServerPlugin::FireGameEvent: Got event \"%s\"\n", name );
+	const char * name = event->GetName();
+	Msg( "CEmptyServerPlugin::FireGameEvent: Got event \"%s\"\n", name );
 }
 
 //---------------------------------------------------------------------------------
@@ -384,7 +384,3 @@ CON_COMMAND( empty_log, "logs the version of zcmp" )
 	engine->LogPrint( "v0.1\n" );
 }
 
-//---------------------------------------------------------------------------------
-// Purpose: an example cvar
-//---------------------------------------------------------------------------------
-// static ConVar empty_cvar("plugin_empty", "0", 0, "Example plugin cvar");
