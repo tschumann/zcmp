@@ -2,9 +2,11 @@
 {
 	game 		"Zeno Clash Multiplayer"
 //	title 		"Zeno Clash"
-	//title2		"== episode one=="
 	gamelogo 1
 	nodifficulty 0
+
+	developer	"Team Sandpit"
+	developer_url	"http://www.teamsandpit.com/"
 
 	type		singleplayer_only
 
