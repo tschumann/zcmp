@@ -14,7 +14,7 @@ In-game open the console and type connect followed by the contents of the IP Add
 
 == Changelog ==
 
-v0.0.1 (??/??/??)
+v0.0.1 (27/12/16)
 - Initial release.
 
 == End User License Agreement ==
