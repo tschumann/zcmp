@@ -7,3 +7,8 @@ utils/serverplugin_zcmp/Release
 *.ncb
 *.suo
 *.vcproj.*
+
+mapsrc/*.bsp
+mapsrc/*.log
+mapsrc/*.prt
+mapsrc/*.vmx
