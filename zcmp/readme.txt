@@ -5,15 +5,16 @@ Zeno Clash Multiplayer
 Name: Zeno Clash Multiplayer
 Description: Basic multiplayer plugin for Zeno Clash. Currently it's very much a work in progress and serves heavily as a proof of concept.
 Requirements: Zeno Clash (buy it at http://store.steampowered.com/app/22200/).
-Running: Copy the zcmp directory to steamapps/sourcemods
+Running: Copy the zcmp/ directory to steamapps/sourcemods
 
 To connect to a server look in your friends list at someone playing then click "View Game Info" and note the IP Address.
 In-game open the console and type connect followed by the contents of the IP Address field e.g. " connect 192.168.0.24:27015"
 
 == Changelog ==
 
-v0.0.2 (??/??/??)
-- Enabled console so that mod can always be installed to sourcemods directory.
+v0.0.2 (??/??/17)
+- Updated the test map to be a bit more interesting.
+- Enabled the console so that mod can always be installed to sourcemods directory.
 
 v0.0.1 (27/12/16)
 - Initial release.
