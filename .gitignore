@@ -1,7 +1,9 @@
 utils/serverplugin_sample/Debug
 utils/serverplugin_sample/Release
+utils/serverplugin_sample/.vs
 utils/serverplugin_zcmp/Debug
 utils/serverplugin_zcmp/Release
+utils/serverplugin_zcmp/.vs
 
 # Visual Studio-related stuff
 *.ncb
