@@ -47,6 +47,7 @@ static ConVar bot_mimic_yaw_offset( "plugin_bot_mimic_yaw_offset", "0", 0, "Offs
 
 ConVar bot_sendcmd( "plugin_bot_sendcmd", "", 0, "Forces bots to send the specified command." );
 ConVar bot_crouch( "plugin_bot_crouch", "0", 0, "Bot crouches" );
+ConVar bot_move( "plugin_bot_move", "0", 0, "Bot moves" );
 
 
 // This is our bot class.
@@ -302,20 +303,12 @@ void Bot_ForceFireWeapon( CPluginBot *pBot, CBotCmd &cmd )
 
 void Bot_SetForwardMovement( CPluginBot *pBot, CBotCmd &cmd )
 {
-	if ( !pBot->m_BotInterface->IsEFlagSet(EFL_BOT_FROZEN) )
+	if ( !pBot->m_BotInterface->IsEFlagSet(EFL_BOT_FROZEN) && bot_move.GetInt() > 0 )
 	{
-		if ( pBot->m_PlayerInfo->GetHealth() == 100 )
+		cmd.forwardmove = 600 * ( pBot->m_bBackwards ? -1 : 1 );
+		if ( pBot->m_flSideMove != 0.0f )
 		{
-			cmd.forwardmove = 600 * ( pBot->m_bBackwards ? -1 : 1 );
-			if ( pBot->m_flSideMove != 0.0f )
-			{
-				cmd.forwardmove *= randomStr->RandomFloat( 0.1, 1.0f );
-			}
-		}
-		else
-		{
-			// Stop when shot
-			cmd.forwardmove = 0;
+			cmd.forwardmove *= randomStr->RandomFloat( 0.1, 1.0f );
 		}
 	}
 }
@@ -349,10 +342,10 @@ void Bot_Think( CPluginBot *pBot )
 
 		if ( !pBot->m_PlayerInfo->IsDead() )
 		{
-			// Bot_SetForwardMovement( pBot, cmd );
+			Bot_SetForwardMovement( pBot, cmd );
 
 			// Only turn if I haven't been hurt
-			if ( !pBot->m_BotInterface->IsEFlagSet(EFL_BOT_FROZEN) && pBot->m_PlayerInfo->GetHealth() == 100 )
+			if ( !pBot->m_BotInterface->IsEFlagSet(EFL_BOT_FROZEN) && bot_move.GetInt() > 0 )
 			{
 				// Bot_UpdateDirection( pBot );
 				// Bot_UpdateStrafing( pBot, cmd );
@@ -367,7 +360,7 @@ void Bot_Think( CPluginBot *pBot )
 			Bot_HandleRespawn( pBot, cmd );
 		}
 
-		// Bot_FlipOut( pBot, cmd );
+		Bot_FlipOut( pBot, cmd );
 
 		// Fix up the m_fEffects flags
 		pBot->m_BotInterface->PostClientMessagesSent();

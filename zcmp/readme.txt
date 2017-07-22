@@ -12,6 +12,10 @@ In-game open the console and type connect followed by the contents of the IP Add
 
 == Changelog ==
 
+v0.0.1.2 (22/07/17)
+- Updated compile tools to Visual Studio 2017.
+- Added plugin_bot_move cvar to determine whether bots will walk around or not.
+
 v0.0.1.1 (26/01/17)
 - Fixed the server browser UI being empty.
 - Updated the test map to be a bit more interesting.
