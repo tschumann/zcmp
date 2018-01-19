@@ -11,9 +11,9 @@
 namespace zenoclash
 {
 
-	void CBasePlayer::ZenoCombat(CBaseEntity *pObject, BOOL on)
+	void CBasePlayer::ZenoCombat( CBaseEntity *pObject, BOOL bOn )
 	{
-		// get this
+		// get the this pointer
 		void **pThis = *(void ***)&pObject;
 		// get the vtable as an array of void *
 		void **vtable = *(void ***)pThis;
@@ -24,23 +24,11 @@ namespace zenoclash
 		union
 		{
 			void (VirtualEmpty::*mfpnew)(BOOL);
-		#ifndef __linux__
 			void *addr;
 		} u; 
 		
 		u.addr = pMethod;
-		#else // GCC's member function pointers all contain this pointer adjustor - you'd probably set it to 0 
-			struct
-			{
-				void *addr;
-				intptr_t adjustor;
-			} s;
-		} u;
-		
-		u.s.addr = pMethod;
-		u.s.adjustor = 0;
-		#endif
 	 
-		(void) (reinterpret_cast<VirtualEmpty*>(pThis)->*u.mfpnew)(on);
+		(void)(reinterpret_cast<VirtualEmpty*>(pThis)->*u.mfpnew)(bOn);
 	}
 }

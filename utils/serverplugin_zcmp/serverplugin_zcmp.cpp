@@ -306,7 +306,7 @@ PLUGIN_RESULT CZCMPServerPlugin::ClientCommand( edict_t *pEntity, const CCommand
 	CBaseEntity *pent = GetBaseEntity(pEntity);
 	int index = engine->IndexOfEdict(pEntity);
 
-	if (FStrEq( pcmd, "combaton" ))
+	if ( FStrEq( pcmd, "combaton"  ))
 	{
 		Log("zenocombaton for entity %d\n", index);
 
@@ -322,7 +322,7 @@ PLUGIN_RESULT CZCMPServerPlugin::ClientCommand( edict_t *pEntity, const CCommand
 		// we handled this function
 		return PLUGIN_STOP;
 	}
-	else if (FStrEq( pcmd, "combatoff" ))
+	else if ( FStrEq( pcmd, "combatoff" ) )
 	{
 		Log("zenocombatoff for entity %d\n", index);
 
@@ -370,19 +370,19 @@ void CZCMPServerPlugin::OnEdictFreed( const edict_t *edict  )
 void CZCMPServerPlugin::FireGameEvent( KeyValues * event )
 {
 	const char * name = event->GetName();
-	Msg( "CEmptyServerPlugin::FireGameEvent: Got event \"%s\"\n", name );
+	Msg( "CZCMPServerPlugin::FireGameEvent: Got event \"%s\"\n", name );
 
-	if (FStrEq(name, "player_activate"))
+	if ( FStrEq(name, "player_activate") )
 	{
 		for ( KeyValues *pKey = event->GetFirstSubKey(); pKey; pKey = pKey->GetNextKey() )
 		{
-			if (FStrEq(pKey->GetName(), "userid"))
+			if ( FStrEq(pKey->GetName(), "userid") )
 			{
 				int userid = pKey->GetInt();
 
-				for (int i = 1; i <= m_iMaxClientCount; i++)
+				for ( int i = 1; i <= m_iMaxClientCount; i++ )
 				{
-					// get the player
+					// get the player edict_t from the index
 					edict_t *player = engine->PEntityOfEntIndex(i);
 
 					if (!player)
@@ -393,6 +393,7 @@ void CZCMPServerPlugin::FireGameEvent( KeyValues * event )
 					// if the player has given userid
 					if (engine->GetPlayerUserId(player) == userid)
 					{
+						// turn combat on for the player that just joined
 						helpers->ClientCommand( player, "combaton" );
 						// stop looking
 						break;

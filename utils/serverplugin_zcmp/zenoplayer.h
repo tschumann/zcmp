@@ -20,7 +20,7 @@ namespace zenoclash
 	class CBasePlayer
 	{
 	public:
-		static void ZenoCombat(CBaseEntity *pThisPtr, BOOL on);
+		static void ZenoCombat( CBaseEntity *pObject, BOOL bOn );
 	};
 }
 

@@ -8,7 +8,7 @@ Requirements: Zeno Clash (buy it at http://store.steampowered.com/app/22200/).
 Running: Copy the zcmp/ directory to steamapps/sourcemods
 
 Currently the server browser can't find games - to connect to a server look in your friends list at someone playing then click "View Game Info" and note the IP Address.
-In-game open the console and type connect followed by the contents of the IP Address field e.g. " connect 192.168.0.24:27015"
+In-game open the console and type connect followed by the contents of the IP Address field e.g. "connect 192.168.0.24:27015"
 
 == Changelog ==
 
@@ -38,6 +38,7 @@ Thanks to:
 ACE Team for Zeno Clash, the Zeno Clash SDK and for not changing things too much.
 Valve, for the Source SDK.
 Todd Aspeotis, for teaching me C++.
+Whoever wrote the https://wiki.alliedmods.net/Virtual_Offsets_(Source_Mods) article.
 The people who've written the useful apps I use.
 
 == Credits ==
