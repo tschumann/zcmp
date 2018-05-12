@@ -1,16 +1,9 @@
 utils/serverplugin_sample/Debug
 utils/serverplugin_sample/Release
-utils/serverplugin_sample/.vs
-utils/serverplugin_zcmp/Debug
-utils/serverplugin_zcmp/Release
-utils/serverplugin_zcmp/.vs
+utils/serverplugin_zcs/Debug
+utils/serverplugin_zcs/Release
 
 # Visual Studio-related stuff
 *.ncb
 *.suo
 *.vcproj.*
-
-mapsrc/*.bsp
-mapsrc/*.log
-mapsrc/*.prt
-mapsrc/*.vmx
