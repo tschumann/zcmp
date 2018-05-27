@@ -101,6 +101,8 @@ public:
 private:
 	int m_iClientCommandIndex;
 	int m_iMaxClientCount;
+
+	bool m_bIsSurvivor;
 };
 
 
@@ -117,6 +119,8 @@ CZCMPServerPlugin::CZCMPServerPlugin()
 {
 	m_iClientCommandIndex = 0;
 	m_iMaxClientCount = 0;
+
+	m_bIsSurvivor = false;
 }
 
 CZCMPServerPlugin::~CZCMPServerPlugin()
@@ -205,6 +209,11 @@ void CZCMPServerPlugin::LevelInit( char const *pMapName )
 {
 	Msg( "Level \"%s\" has been loaded\n", pMapName );
 	gameeventmanager->AddListener( this, true );
+
+	if ( !strncmp( pMapName, "zcs_", strlen("zcs_") ) )
+	{
+		m_bIsSurvivor = true;
+	}
 }
 
 //---------------------------------------------------------------------------------
@@ -409,11 +418,11 @@ void CZCMPServerPlugin::FireGameEvent( KeyValues * event )
 //---------------------------------------------------------------------------------
 CON_COMMAND( empty_version, "prints the version of zcmp" )
 {
-	Msg( "v0.1\n" );
+	Msg( "v0.0.1.2\n" );
 }
 
 CON_COMMAND( empty_log, "logs the version of zcmp" )
 {
-	engine->LogPrint( "v0.1\n" );
+	engine->LogPrint( "v0.0.1.2\n" );
 }
 
